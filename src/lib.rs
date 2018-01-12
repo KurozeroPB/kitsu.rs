@@ -96,24 +96,20 @@
 //! [license file]: https://github.com/zeyla/kitsu.rs/blob/master/README.md
 #![deny(missing_docs)]
 
+#[macro_use] extern crate serde_derive;
+
+extern crate serde;
+extern crate serde_json;
+
+#[cfg(feature = "hyper")]
+extern crate futures;
 #[cfg(feature = "hyper")]
 extern crate hyper;
-#[cfg(feature = "hyper")]
-extern crate hyper_tls;
 #[cfg(feature = "reqwest")]
 extern crate reqwest;
-#[cfg(feature = "serde_derive")]
-extern crate serde;
-#[cfg(feature = "serde_derive")]
-#[macro_use]
-extern crate serde_derive;
-#[cfg(feature = "serde_derive")]
-extern crate serde_json;
 
 pub mod bridge;
 pub mod builder;
-
-#[cfg(feature = "serde_derive")]
 pub mod model;
 
 mod error;
