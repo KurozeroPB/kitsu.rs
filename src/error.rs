@@ -29,7 +29,6 @@ pub enum Error {
     ///
     /// A potential reason for this is when there is an error deserializing a
     /// JSON response body.
-    #[cfg(feature = "reqwest")]
     Json(JsonError),
     /// An error from the `reqwest` crate when it is enabled.
     #[cfg(feature = "reqwest")]
@@ -97,7 +96,6 @@ impl StdError for Error {
         match *self {
             #[cfg(feature = "hyper")]
             Error::Hyper(ref inner) => inner.description(),
-            #[cfg(feature = "reqwest")]
             Error::Json(ref inner) => inner.description(),
             #[cfg(feature = "reqwest")]
             Error::Reqwest(ref inner) => inner.description(),
