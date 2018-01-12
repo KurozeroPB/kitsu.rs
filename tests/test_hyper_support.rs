@@ -24,13 +24,7 @@ fn test_get_anime() {
         .connector(connector)
         .build(&core.handle());
 
-    let runner = client.get_anime(1).unwrap().and_then(|res| {
-        res.body().for_each(|chunk| {
-            io::stdout().write_all(&chunk).map_err(From::from)
-        })
-    }).map(|_| {
-        println!("Done")
-    });
+    let runner = client.get_anime(1).map(|_| ()).map_err(|_| ());
 
     core.run(runner).unwrap();
 }
@@ -45,13 +39,7 @@ fn test_get_manga() {
         .connector(connector)
         .build(&core.handle());
 
-    let runner = client.get_manga(1).unwrap().and_then(|res| {
-        res.body().for_each(|chunk| {
-            io::stdout().write_all(&chunk).map_err(From::from)
-        })
-    }).map(|_| {
-        println!("Done")
-    });
+    let runner = client.get_manga(1).map(|_| ()).map_err(|_| ());
 
     core.run(runner).unwrap();
 }
@@ -66,13 +54,7 @@ fn test_get_user() {
         .connector(connector)
         .build(&core.handle());
 
-    let runner = client.get_user(1).unwrap().and_then(|res| {
-        res.body().for_each(|chunk| {
-            io::stdout().write_all(&chunk).map_err(From::from)
-        })
-    }).map(|_| {
-        println!("Done")
-    });
+    let runner = client.get_user(1).map(|_| ()).map_err(|_| ());
 
     core.run(runner).unwrap();
 }
@@ -88,13 +70,7 @@ fn test_search_anime() {
         .build(&core.handle());
 
     let runner = client.search_anime(|f| f.filter("text", "non non biyori"))
-        .unwrap().and_then(|res| {
-            res.body().for_each(|chunk| {
-            io::stdout().write_all(&chunk).map_err(From::from)
-            })
-        }).map(|_| {
-            println!("Done")
-        });
+        .map(|_| ()).map_err(|_| ());
 
     core.run(runner).unwrap();
 }
@@ -110,13 +86,7 @@ fn test_search_manga() {
         .build(&core.handle());
 
     let runner = client.search_manga(|f| f.filter("text", "orange"))
-        .unwrap().and_then(|res| {
-            res.body().for_each(|chunk| {
-            io::stdout().write_all(&chunk).map_err(From::from)
-            })
-        }).map(|_| {
-            println!("Done")
-        });
+        .map(|_| ()).map_err(|_| ());
 
     core.run(runner).unwrap();
 }
@@ -132,13 +102,7 @@ fn test_search_users() {
         .build(&core.handle());
 
     let runner = client.search_users(|f| f.filter("name", "vikhyat"))
-        .unwrap().and_then(|res| {
-            res.body().for_each(|chunk| {
-            io::stdout().write_all(&chunk).map_err(From::from)
-            })
-        }).map(|_| {
-            println!("Done")
-        });
+        .map(|_| ()).map_err(|_| ());
 
     core.run(runner).unwrap();
 }
