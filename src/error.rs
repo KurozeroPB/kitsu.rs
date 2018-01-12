@@ -1,11 +1,10 @@
-#[cfg(feature = "reqwest")]
 use serde_json::Error as JsonError;
 use std::error::Error as StdError;
 use std::fmt::{Display, Formatter, Result as FmtResult};
 use std::result::Result as StdResult;
 
 #[cfg(feature = "hyper")]
-use hyper::error::UriError;
+use hyper::error::{Error as HyperError, UriError};
 #[cfg(feature = "reqwest")]
 use reqwest::{
     Error as ReqwestError,
@@ -23,6 +22,9 @@ pub type Result<T> = StdResult<T, Error>;
 /// errors.
 #[derive(Debug)]
 pub enum Error {
+    /// An error from the `hyper` crate.
+    #[cfg(feature = "hyper")]
+    Hyper(HyperError),
     /// An error from the `serde_json` crate.
     ///
     /// A potential reason for this is when there is an error deserializing a
@@ -50,7 +52,13 @@ pub enum Error {
     Uri(UriError),
 }
 
-#[cfg(feature = "reqwest")]
+#[cfg(feature = "hyper")]
+impl From<HyperError> for Error {
+    fn from(err: HyperError) -> Self {
+        Error::Hyper(err)
+    }
+}
+
 impl From<JsonError> for Error {
     fn from(err: JsonError) -> Self {
         Error::Json(err)
@@ -87,6 +95,8 @@ impl Display for Error {
 impl StdError for Error {
     fn description(&self) -> &str {
         match *self {
+            #[cfg(feature = "hyper")]
+            Error::Hyper(ref inner) => inner.description(),
             #[cfg(feature = "reqwest")]
             Error::Json(ref inner) => inner.description(),
             #[cfg(feature = "reqwest")]
