@@ -6,9 +6,10 @@
 //!
 //! [`KitsuRequester`]: trait.KitsuRequester.html
 
-use hyper::client::{Client as HyperClient, FutureResponse, HttpConnector};
-use hyper::{Body, Method, Request, Uri};
-use hyper_tls::HttpsConnector;
+use futures::Stream;
+use hyper::client::{Client as HyperClient, Connect, FutureResponse};
+use hyper::error::Error as HyperError;
+use hyper::{Method, Request, Uri};
 use std::str::FromStr;
 use ::builder::Search;
 use ::{API_URL, Result};
@@ -296,7 +297,8 @@ pub trait KitsuRequester {
         Result<FutureResponse>;
 }
 
-impl KitsuRequester for HyperClient<HttpsConnector<HttpConnector>, Body> {
+impl<B, C: Connect> KitsuRequester for HyperClient<C, B>
+    where B: Stream<Error = HyperError> + 'static, B::Item: AsRef<[u8]> {
     fn get_anime(&self, id: u64) -> Result<FutureResponse> {
         let uri = Uri::from_str(&format!("{}/anime/{}", API_URL, id))?;
         let request = Request::new(Method::Get, uri);
