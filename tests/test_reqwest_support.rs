@@ -1,9 +1,9 @@
 #![cfg(feature = "reqwest-support")]
 
-extern crate kitsu_io;
+extern crate kitsu;
 extern crate reqwest;
 
-use kitsu_io::KitsuReqwestRequester;
+use kitsu::KitsuReqwestRequester;
 use reqwest::Client;
 
 #[ignore]
