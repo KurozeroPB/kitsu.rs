@@ -1,6 +1,6 @@
 [package]
 authors = ["Mei Boudreau <xanizl@me.com>", "Zeyla Hellyer <zey@zey.moe>"]
-name = "kitsu_io"
+name = "kitsu"
 version = "0.2.0"
 
 [dependencies]

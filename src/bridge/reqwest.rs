@@ -22,7 +22,7 @@ use ::model::{Anime, Manga, Response, User};
 /// trait:
 ///
 /// ```rust,no_run
-/// use kitsu_io::KitsuReqwestRequester;
+/// use kitsu::KitsuReqwestRequester;
 /// ```
 ///
 /// At this point, the methods will be on your Reqwest Client.
@@ -34,10 +34,10 @@ pub trait KitsuRequester {
     ///
     ///
     /// ```rust,no_run
-    /// extern crate kitsu_io;
+    /// extern crate kitsu;
     /// extern crate reqwest;
     ///
-    /// use kitsu_io::KitsuReqwestRequester;
+    /// use kitsu::KitsuReqwestRequester;
     /// use reqwest::Client;
     ///
     /// fn main() {
@@ -86,10 +86,10 @@ pub trait KitsuRequester {
     ///
     ///
     /// ```rust,no_run
-    /// extern crate kitsu_io;
+    /// extern crate kitsu;
     /// extern crate reqwest;
     ///
-    /// use kitsu_io::KitsuReqwestRequester;
+    /// use kitsu::KitsuReqwestRequester;
     /// use reqwest::Client;
     ///
     /// fn main() {
@@ -138,10 +138,10 @@ pub trait KitsuRequester {
     ///
     ///
     /// ```rust,no_run
-    /// extern crate kitsu_io;
+    /// extern crate kitsu;
     /// extern crate reqwest;
     ///
-    /// use kitsu_io::KitsuReqwestRequester;
+    /// use kitsu::KitsuReqwestRequester;
     /// use reqwest::Client;
     ///
     /// fn main() {
@@ -190,10 +190,10 @@ pub trait KitsuRequester {
     ///
     ///
     /// ```rust,no_run
-    /// extern crate kitsu_io;
+    /// extern crate kitsu;
     /// extern crate reqwest;
     ///
-    /// use kitsu_io::KitsuReqwestRequester;
+    /// use kitsu::KitsuReqwestRequester;
     /// use reqwest::Client;
     ///
     /// fn main() {
@@ -243,10 +243,10 @@ pub trait KitsuRequester {
     ///
     ///
     /// ```rust,no_run
-    /// extern crate kitsu_io;
+    /// extern crate kitsu;
     /// extern crate reqwest;
     ///
-    /// use kitsu_io::KitsuReqwestRequester;
+    /// use kitsu::KitsuReqwestRequester;
     /// use reqwest::Client;
     ///
     /// fn main() {
@@ -296,10 +296,10 @@ pub trait KitsuRequester {
     ///
     ///
     /// ```rust,no_run
-    /// extern crate kitsu_io;
+    /// extern crate kitsu;
     /// extern crate reqwest;
     ///
-    /// use kitsu_io::KitsuReqwestRequester;
+    /// use kitsu::KitsuReqwestRequester;
     /// use reqwest::Client;
     ///
     /// fn main() {

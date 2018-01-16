@@ -804,7 +804,7 @@ impl AgeRating {
     /// # Examples
     ///
     /// ```rust
-    /// use kitsu_io::model::AgeRating;
+    /// use kitsu::model::AgeRating;
     ///
     /// assert_eq!(AgeRating::PG.name().unwrap(), "PG");
     /// ```
@@ -867,7 +867,7 @@ impl AnimeType {
     /// # Examples
     ///
     /// ```rust
-    /// use kitsu_io::model::AnimeType;
+    /// use kitsu::model::AnimeType;
     ///
     /// assert_eq!(AnimeType::Movie.name().unwrap(), "movie");
     /// assert_eq!(AnimeType::TV.name().unwrap(), "TV");
@@ -908,7 +908,7 @@ impl MangaType {
     /// # Examples
     ///
     /// ```rust
-    /// use kitsu_io::model::MangaType;
+    /// use kitsu::model::MangaType;
     ///
     /// assert_eq!(MangaType::Novel.name().unwrap(), "novel");
     /// ```
@@ -948,7 +948,7 @@ impl Type {
     /// # Examples
     ///
     /// ```rust
-    /// use kitsu_io::model::Type;
+    /// use kitsu::model::Type;
     ///
     /// assert_eq!(Type::Anime.name().unwrap(), "anime");
     /// ```
@@ -979,7 +979,7 @@ impl WaifuOrHusbando {
     /// # Examples
     ///
     /// ```rust
-    /// use kitsu_io::model::WaifuOrHusbando;
+    /// use kitsu::model::WaifuOrHusbando;
     ///
     /// assert_eq!(WaifuOrHusbando::Husbando.name().unwrap(), "Husbando");
     /// ```

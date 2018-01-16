@@ -34,7 +34,7 @@ macro_rules! try_uri {
 /// trait:
 ///
 /// ```rust,no_run
-/// use kitsu_io::KitsuHyperRequester;
+/// use kitsu::KitsuHyperRequester;
 /// ```
 ///
 /// At this point, the methods will be on your Hyper Client.
@@ -48,11 +48,11 @@ pub trait KitsuRequester {
     /// ```rust,ignore
     /// extern crate hyper;
     /// extern crate hyper_tls;
-    /// extern crate kitsu_io;
+    /// extern crate kitsu;
     /// extern crate tokio_core;
     ///
     /// use hyper_tls::HttpsConnector;
-    /// use kitsu_io::KitsuHyperRequester;
+    /// use kitsu::KitsuHyperRequester;
     /// use hyper::Client;
     /// use std::env;
     /// use tokio_core::reactor::Core;
@@ -95,11 +95,11 @@ pub trait KitsuRequester {
     /// ```rust,ignore
     /// extern crate hyper;
     /// extern crate hyper_tls;
-    /// extern crate kitsu_io;
+    /// extern crate kitsu;
     /// extern crate tokio_core;
     ///
     /// use hyper_tls::HttpsConnector;
-    /// use kitsu_io::KitsuHyperRequester;
+    /// use kitsu::KitsuHyperRequester;
     /// use hyper::Client;
     /// use std::env;
     /// use tokio_core::reactor::Core;
@@ -142,11 +142,11 @@ pub trait KitsuRequester {
     /// ```rust,ignore
     /// extern crate hyper;
     /// extern crate hyper_tls;
-    /// extern crate kitsu_io;
+    /// extern crate kitsu;
     /// extern crate tokio_core;
     ///
     /// use hyper_tls::HttpsConnector;
-    /// use kitsu_io::KitsuHyperRequester;
+    /// use kitsu::KitsuHyperRequester;
     /// use hyper::Client;
     /// use std::env;
     /// use tokio_core::reactor::Core;
@@ -189,11 +189,11 @@ pub trait KitsuRequester {
     /// ```rust,ignore
     /// extern crate hyper;
     /// extern crate hyper_tls;
-    /// extern crate kitsu_io;
+    /// extern crate kitsu;
     /// extern crate tokio_core;
     ///
     /// use hyper_tls::HttpsConnector;
-    /// use kitsu_io::KitsuHyperRequester;
+    /// use kitsu::KitsuHyperRequester;
     /// use hyper::Client;
     /// use std::env;
     /// use tokio_core::reactor::Core;
@@ -236,11 +236,11 @@ pub trait KitsuRequester {
     /// ```rust,ignore
     /// extern crate hyper;
     /// extern crate hyper_tls;
-    /// extern crate kitsu_io;
+    /// extern crate kitsu;
     /// extern crate tokio_core;
     ///
     /// use hyper_tls::HttpsConnector;
-    /// use kitsu_io::KitsuHyperRequester;
+    /// use kitsu::KitsuHyperRequester;
     /// use hyper::Client;
     /// use std::env;
     /// use tokio_core::reactor::Core;
@@ -283,11 +283,11 @@ pub trait KitsuRequester {
     /// ```rust,ignore
     /// extern crate hyper;
     /// extern crate hyper_tls;
-    /// extern crate kitsu_io;
+    /// extern crate kitsu;
     /// extern crate tokio_core;
     ///
     /// use hyper_tls::HttpsConnector;
-    /// use kitsu_io::KitsuHyperRequester;
+    /// use kitsu::KitsuHyperRequester;
     /// use hyper::Client;
     /// use std::env;
     /// use tokio_core::reactor::Core;
