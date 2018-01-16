@@ -1,7 +1,17 @@
 [package]
 authors = ["Mei Boudreau <xanizl@me.com>", "Zeyla Hellyer <zey@zey.moe>"]
+categories = ["api-bindings", "web-programming"]
+description = "Unofficial Rust HTTP client implementations for the Kitsu API."
+documentation = "https://docs.rs/kitsu"
+homepage = "https://github.com/zeyla/kitsu"
+keywords = ["api", "http", "kitsu"]
+license = "ISC"
 name = "kitsu"
+repository = "https://github.com/zeyla/kitsu.rs.git"
 version = "0.1.0"
+
+[badges.maintenance]
+status = "actively-developed"
 
 [dependencies]
 serde = "^1.0"
