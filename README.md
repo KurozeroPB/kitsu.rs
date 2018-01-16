@@ -17,14 +17,14 @@ Add the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-kitsu = "0.2"
+kitsu = "0.1"
 ```
 
 To enable both `hyper` and `reqwest` support:
 
 ```toml
 [dependencies.kitsu]
-version = "0.2"
+version = "0.1"
 features = ["hyper-support", "reqwest-support"]
 ```
 
@@ -32,7 +32,7 @@ To enable `hyper` but not `reqwest` support:
 
 ```toml
 [dependencies.kitsu]
-version = "0.2"
+version = "0.1"
 default-features = false
 features = ["hyper-support"]
 ```
