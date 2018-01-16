@@ -17,14 +17,14 @@
 //!
 //! ```toml
 //! [dependencies]
-//! kitsu = "0.2"
+//! kitsu = "0.1"
 //! ```
 //!
 //! To enable both `hyper` and `reqwest` support:
 //!
 //! ```toml
 //! [dependencies.kitsu]
-//! version = "0.2"
+//! version = "0.1"
 //! features = ["hyper-support", "reqwest-support"]
 //! ```
 //!
@@ -32,7 +32,7 @@
 //!
 //! ```toml
 //! [dependencies.kitsu]
-//! version = "0.2"
+//! version = "0.1"
 //! default-features = false
 //! features = ["hyper-support"]
 //! ```
