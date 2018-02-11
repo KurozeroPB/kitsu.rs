@@ -7,11 +7,9 @@ extern crate kitsu;
 extern crate tokio_core;
 
 use futures::Future;
-use futures::stream::Stream;
 use hyper::Client;
 use hyper_tls::HttpsConnector;
 use kitsu::KitsuHyperRequester;
-use std::io::{self, Write};
 use tokio_core::reactor::Core;
 
 #[ignore]
@@ -25,6 +23,23 @@ fn test_get_anime() {
         .build(&core.handle());
 
     let runner = client.get_anime(1).map(|_| ()).map_err(|_| ());
+
+    core.run(runner).unwrap();
+}
+
+#[ignore]
+#[test]
+fn test_get_character() {
+    let mut core = Core::new().unwrap();
+
+    let connector = HttpsConnector::new(1, &core.handle()).unwrap();
+    let client = Client::configure()
+        .connector(connector)
+        .build(&core.handle());
+
+    let runner = client.get_character(1).map(|_| ()).map_err(|why| {
+        panic!("{:?}", why);
+    });
 
     core.run(runner).unwrap();
 }
@@ -70,7 +85,10 @@ fn test_search_anime() {
         .build(&core.handle());
 
     let runner = client.search_anime(|f| f.filter("text", "non non biyori"))
-        .map(|_| ()).map_err(|_| ());
+        .map(|_| ())
+        .map_err(|why| {
+            panic!("{:?}", why);
+        });
 
     core.run(runner).unwrap();
 }

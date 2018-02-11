@@ -86,6 +86,10 @@ pub trait KitsuRequester {
     fn get_anime(&self, id: u64)
         -> Box<Future<Item = Response<Anime>, Error = Error>>;
 
+    /// Gets a character using its id.
+    fn get_character(&self, id: u64)
+        -> Box<Future<Item = Response<Character>, Error = Error>>;
+
     /// Gets a manga using its id.
     ///
     /// # Examples
@@ -227,6 +231,10 @@ pub trait KitsuRequester {
     fn search_anime<F: FnOnce(Search) -> Search>(&self, f: F)
         -> Box<Future<Item = Response<Vec<Anime>>, Error = Error>>;
 
+    /// Searches for a character using the passed search builder.
+    fn search_characters<F: FnOnce(Search) -> Search>(&self, f: F)
+        -> Box<Future<Item = Response<Vec<Character>>, Error = Error>>;
+
     /// Searches for a manga using the passed [Search] builder.
     ///
     /// # Examples
@@ -338,6 +346,18 @@ impl<B, C: Connect> KitsuRequester for HyperClient<C, B>
             .and_then(|body| serde_json::from_slice(&body).map_err(From::from)))
     }
 
+    fn get_character(&self, id: u64)
+        -> Box<Future<Item = Response<Character>, Error = Error>> {
+        let url = format!("{}/characters/{}", API_URL, id);
+        let c = &url;
+        let uri = try_uri!(c);
+
+        Box::new(self.get(uri)
+            .and_then(|res| res.body().concat2())
+            .map_err(From::from)
+            .and_then(|body| serde_json::from_slice(&body).map_err(From::from)))
+    }
+
     fn get_manga(&self, id: u64)
         -> Box<Future<Item = Response<Manga>, Error = Error>> {
         let url = format!("{}/manga/{}", API_URL, id);
@@ -367,6 +387,20 @@ impl<B, C: Connect> KitsuRequester for HyperClient<C, B>
         let params = f(Search::default()).0;
 
         let url = format!("{}/anime?{}", API_URL, params);
+        let c = &url;
+        let uri = try_uri!(c);
+
+        Box::new(self.get(uri)
+            .and_then(|res| res.body().concat2())
+            .map_err(From::from)
+            .and_then(|body| serde_json::from_slice(&body).map_err(From::from)))
+    }
+
+    fn search_characters<F: FnOnce(Search) -> Search>(&self, f: F)
+        -> Box<Future<Item = Response<Vec<Character>>, Error = Error>> {
+        let params = f(Search::default()).0;
+
+        let url = format!("{}/characters?{}", API_URL, params);
         let c = &url;
         let uri = try_uri!(c);
 

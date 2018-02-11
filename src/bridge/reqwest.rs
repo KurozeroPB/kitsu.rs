@@ -12,7 +12,7 @@ use serde::de::DeserializeOwned;
 use serde_json;
 use ::builder::Search;
 use ::{API_URL, Error, Result};
-use ::model::{Anime, Manga, Response, User};
+use ::model::{Anime, Character, Manga, Response, User};
 
 /// Trait which defines the methods necessary to interact with the service.
 ///
@@ -78,6 +78,9 @@ pub trait KitsuRequester {
     /// [`Error::ReqwestParse`]: ../enum.Error.html#variant.ReqwestParse
     /// [`Error::ReqwestUnauthorized`]: ../enum.Error.html#variant.ReqwestUnauthorized
     fn get_anime(&self, id: u64) -> Result<Response<Anime>>;
+
+    /// Gets a character using its id.
+    fn get_character(&self, id: u64) -> Result<Response<Character>>;
 
     /// Gets a manga using its id.
     ///
@@ -236,6 +239,10 @@ pub trait KitsuRequester {
     fn search_anime<F: FnOnce(Search) -> Search>(&self, f: F) ->
         Result<Response<Vec<Anime>>>;
 
+    /// Searches for a character.
+    fn search_characters<F: FnOnce(Search) -> Search>(&self, f: F)
+        -> Result<Response<Vec<Character>>>;
+
     /// Gets an anime using its id.
     ///
     /// # Examples
@@ -350,6 +357,12 @@ impl KitsuRequester for ReqwestClient {
         handle_request::<Response<Anime>>(&mut self.get(uri))
     }
 
+    fn get_character(&self, id: u64) -> Result<Response<Character>> {
+        let uri = Url::parse(&format!("{}/character/{}", API_URL, id.to_string()))?;
+
+        handle_request::<Response<Character>>(&mut self.get(uri))
+    }
+
     fn get_manga(&self, id: u64) -> Result<Response<Manga>> {
         let uri = Url::parse(&format!("{}/manga/{}", API_URL, id.to_string()))?;
 
@@ -368,6 +381,14 @@ impl KitsuRequester for ReqwestClient {
         let uri = Url::parse(&format!("{}/anime?{}", API_URL, params))?;
 
         handle_request::<Response<Vec<Anime>>>(&mut self.get(uri))
+    }
+
+    fn search_characters<F: FnOnce(Search) -> Search>(&self, f: F) ->
+        Result<Response<Vec<Character>>> {
+        let params = f(Search::default()).0;
+        let uri = Url::parse(&format!("{}/characters?{}", API_URL, params))?;
+
+        handle_request::<Response<Vec<Character>>>(&mut self.get(uri))
     }
 
     fn search_manga<F: FnOnce(Search) -> Search>(&self, f: F) ->

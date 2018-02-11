@@ -4,6 +4,44 @@ use serde_json;
 use std::collections::HashMap;
 use ::Result;
 
+/// Information about a character.
+#[derive(Clone, Debug, Deserialize)]
+pub struct Character {
+    /// Information about the character.
+    pub attributes: CharacterAttributes,
+    /// The id of the character.
+    pub id: String,
+    /// The type of item this is. This should always be [`Type::Character`].
+    ///
+    /// [`Type::Character`]: enum.Character.html#variant.Character
+    #[serde(rename = "type")]
+    pub kind: Type,
+    /// Links related to the anime.
+    pub links: HashMap<String, String>,
+}
+
+/// Information about a [`Character`].
+///
+/// [`Character`]: struct.Character.html
+#[derive(Clone, Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CharacterAttributes {
+    /// When the entry was created.
+    pub created_at: String,
+    /// A description of the character.
+    pub description: String,
+    /// URLs to cover images.
+    pub image: CoverImage,
+    /// The ID of the MAL entry.
+    pub mal_id: i64,
+    /// The name of the character.
+    pub name: String,
+    /// URL slug of the character.
+    pub slug: String,
+    /// When the entry was last updated.
+    pub updated_at: String,
+}
+
 /// Information about an anime.
 #[derive(Clone, Debug, Deserialize)]
 pub struct Anime {
@@ -930,6 +968,11 @@ pub enum Type {
     ///
     /// [`Anime`]: struct.Anime.html
     Anime,
+    /// Indicator that the result is a [`Character`].
+    ///
+    /// [`Character`]: struct.Character.html
+    #[serde(rename = "characters")]
+    Character,
     /// Indicator that the result is a drama.
     Drama,
     /// Indicator that the result is a [`Manga`].

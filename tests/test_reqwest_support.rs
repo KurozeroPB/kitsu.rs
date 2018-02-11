@@ -17,6 +17,15 @@ fn test_get_anime() {
 
 #[ignore]
 #[test]
+fn test_get_character() {
+    let client = Client::new();
+    let res = client.get_character(1).unwrap();
+
+    assert_eq!(res.data.id, "1");
+}
+
+#[ignore]
+#[test]
 fn test_get_manga() {
     let client = Client::new();
     let res = client.get_manga(1).unwrap();
