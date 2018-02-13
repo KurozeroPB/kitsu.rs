@@ -1,5 +1,6 @@
 //! A set of builders for ease of use with optional parameters around the API.
 
+use percent_encoding::{self, DEFAULT_ENCODE_SET};
 use std::fmt::Write;
 
 /// Filters search results.
@@ -14,6 +15,15 @@ pub struct Search(pub String);
 impl Search {
     /// Filters results by a key and value.
     pub fn filter(mut self, key: &str, value: &str) -> Self {
+        let key = percent_encoding::utf8_percent_encode(
+            key,
+            DEFAULT_ENCODE_SET,
+        );
+        let value = percent_encoding::utf8_percent_encode(
+            value,
+            DEFAULT_ENCODE_SET,
+        );
+
         let _ = write!(self.0, "&filter[{}]={}", key, value);
 
         self
@@ -46,6 +56,11 @@ impl Search {
     /// `id` will sort ascending, while `-id` will sort descending. Multiple
     /// sorters can be provided by joining with a comma (`','`).
     pub fn sort(mut self, sort: &str) -> Self {
+        let sort = percent_encoding::utf8_percent_encode(
+            sort,
+            DEFAULT_ENCODE_SET,
+        );
+
         let _ = write!(self.0, "&sort={}", sort);
 
         self

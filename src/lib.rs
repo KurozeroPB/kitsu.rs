@@ -99,6 +99,7 @@
 
 #[macro_use] extern crate serde_derive;
 
+extern crate percent_encoding;
 extern crate serde;
 extern crate serde_json;
 
