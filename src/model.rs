@@ -29,7 +29,7 @@ pub struct CharacterAttributes {
     /// When the entry was created.
     pub created_at: String,
     /// A description of the character.
-    pub description: String,
+    pub description: Option<String>,
     /// URLs to cover images.
     pub image: CoverImage,
     /// The ID of the MAL entry.
