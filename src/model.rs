@@ -31,8 +31,7 @@ pub struct CharacterAttributes {
     /// A description of the character.
     pub description: Option<String>,
     /// URLs to cover images.
-    #[serde(default)]
-    pub image: CoverImage,
+    pub image: Option<CoverImage>,
     /// The ID of the MAL entry.
     pub mal_id: i64,
     /// The name of the character.
