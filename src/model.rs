@@ -31,6 +31,7 @@ pub struct CharacterAttributes {
     /// A description of the character.
     pub description: Option<String>,
     /// URLs to cover images.
+    #[serde(default)]
     pub image: CoverImage,
     /// The ID of the MAL entry.
     pub mal_id: i64,
@@ -285,7 +286,7 @@ pub struct AnimeRelationships {
 }
 
 /// Information about the cover image for a media item.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize)]
 pub struct CoverImage {
     /// Link to the large copy.
     pub large: Option<String>,
