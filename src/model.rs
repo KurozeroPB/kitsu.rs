@@ -5,7 +5,7 @@ use std::collections::HashMap;
 use ::Result;
 
 /// Information about a character.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Character {
     /// Information about the character.
     pub attributes: CharacterAttributes,
@@ -23,7 +23,7 @@ pub struct Character {
 /// Information about a [`Character`].
 ///
 /// [`Character`]: struct.Character.html
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CharacterAttributes {
     /// When the entry was created.
@@ -43,7 +43,7 @@ pub struct CharacterAttributes {
 }
 
 /// Information about an anime.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Anime {
     /// Information about the anime.
     pub attributes: AnimeAttributes,
@@ -83,7 +83,7 @@ impl Anime {
 /// Information about an [`Anime`].
 ///
 /// [`Anime`]: struct.Anime.html
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all= "camelCase")]
 pub struct AnimeAttributes {
     /// Shortened nicknames for the [anime][`Anime`].
@@ -246,7 +246,7 @@ impl AnimeAttributes {
 }
 
 /// Links related to the media item.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Links {
     /// Link to a related media item.
     pub related: String,
@@ -256,7 +256,7 @@ pub struct Links {
 }
 
 /// A relationship for a media item.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Relationship {
     /// Links for one set of the media item's related links.
     pub links: Links,
@@ -265,7 +265,7 @@ pub struct Relationship {
 /// Relationships for an [`Anime`].
 ///
 /// [`Anime`]: struct.Anime.html
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct AnimeRelationships {
     /// Castings for the anime.
     pub castings: Relationship,
@@ -285,7 +285,7 @@ pub struct AnimeRelationships {
 }
 
 /// Information about the cover image for a media item.
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct CoverImage {
     /// Link to the large copy.
     pub large: Option<String>,
@@ -308,7 +308,7 @@ impl CoverImage {
 }
 
 /// A list of links to the media's relevant images.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Image {
     /// Link to a large size of the image.
     pub large: Option<String>,
@@ -339,7 +339,7 @@ impl Image {
 }
 
 /// Information about a manga.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Manga {
     /// Information about the manga.
     pub attributes: MangaAttributes,
@@ -377,7 +377,7 @@ impl Manga {
 /// Information about a [`Manga`].
 ///
 /// [`Manga`]: struct.Manga.html
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all="camelCase")]
 pub struct MangaAttributes {
     /// Shortened nicknames for the manga.
@@ -495,7 +495,7 @@ impl MangaAttributes {
 }
 
 /// How many times each rating has been given to the media item.
-#[derive(Clone, Copy, Debug, Deserialize)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct RatingFrequencies {
     /// Number of 0 stars given.
     #[serde(default, rename="0.0")]
@@ -533,7 +533,7 @@ pub struct RatingFrequencies {
 }
 
 /// The titles of the anime.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct AnimeTitles {
     /// The English title of the anime.
     ///
@@ -556,7 +556,7 @@ pub struct AnimeTitles {
 }
 
 /// The titles of the manga.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct MangaTitles {
     /// The English title of the manga.
     ///
@@ -573,7 +573,7 @@ pub struct MangaTitles {
 }
 
 /// Data from a response.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Response<T> {
     /// The full data from a response.
     pub data: T,
@@ -583,7 +583,7 @@ pub struct Response<T> {
 }
 
 /// Information about a user.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct User {
     /// Information about the user.
     pub attributes: UserAttributes,
@@ -603,7 +603,7 @@ pub struct User {
 /// Information about a [`User`].
 ///
 /// [`User`]: struct.User.html
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all="camelCase")]
 pub struct UserAttributes {
     /// The raw markdown for the user's long-form about text.
@@ -780,7 +780,7 @@ impl UserAttributes {
 /// Relationships for a [`User`].
 ///
 /// [`User`]: struct.User.html
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all="camelCase")]
 pub struct UserRelationships {
     /// Links to users the user blocks.
