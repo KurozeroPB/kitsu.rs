@@ -198,6 +198,15 @@ pub struct AnimeAttributes {
     ///
     /// `2013-04-07`
     pub start_date: Option<String>,
+    /// The status of the anime
+    ///
+    /// # Examples
+    ///
+    /// [`Status::Current`], [`Status::Finished`].
+    ///
+    /// [`Status::Current`]: enum.Status.html#variant.Current
+    /// [`Status::Finished`]: enum.Status.html#variant.Finished
+    pub status: Option<Status>,
     /// The sub type of the anime.
     pub sub_type: Option<String>,
     /// Synopsis of the anime.
@@ -457,6 +466,15 @@ pub struct MangaAttributes {
     ///
     /// `2013-04-07`
     pub start_date: Option<String>,
+    /// The status of the manga
+    ///
+    /// # Examples
+    ///
+    /// [`Status::Current`], [`Status::Finished`].
+    ///
+    /// [`Status::Current`]: enum.Status.html#variant.Current
+    /// [`Status::Finished`]: enum.Status.html#variant.Finished
+    pub status: Option<Status>,
     /// Synopsis of the manga.
     ///
     /// # Examples
@@ -875,6 +893,29 @@ impl AiringStatus {
             AiringStatus::Finished => "finished",
         }
     }
+}
+
+/// The status of [`Anime`] and [`Manga`]
+///
+/// [`Anime`]: struct.Anime.html
+/// [`Manga`]: struct.Manga.html
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+pub enum Status {
+    /// Indicator that the media is current.
+    #[serde(rename = "current")]
+    Current,
+    /// Indicator that the media is finished.
+    #[serde(rename = "finished")]
+    Finished,
+    /// Indicator that the media is to-be-announced.
+    #[serde(rename = "tba")]
+    TBA,
+    /// Indicator that the media is unreleased.
+    #[serde(rename = "unreleased")]
+    Unreleased,
+    /// Indicator that the media is upcoming.
+    #[serde(rename = "upcoming")]
+    Upcoming
 }
 
 /// The type of [`Anime`].
