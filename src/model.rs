@@ -233,6 +233,16 @@ pub struct AnimeAttributes {
 
 impl AnimeAttributes {
     /// The current airing status of the anime.
+    ///
+    /// This is calculated by checking the [`end_date`]. If it exists, then
+    /// [`AiringStatus::Finished`] is returned. Otherwise,
+    /// [`AiringStatus::Airing`] is returned.
+    ///
+    /// This distinction is made because [`status`] may not always be accurate.
+    ///
+    /// [`end_date`]: #structfield.end_date
+    /// [`AiringStatus::Airing`]: enum.AiringStatus.html#variant.Airing
+    /// [`AiringStatus::Finished`]: enum.AiringStatus.html#variant.Finished
     pub fn airing_status(&self) -> AiringStatus {
         if self.end_date.is_some() {
             AiringStatus::Finished
@@ -491,6 +501,10 @@ pub struct MangaAttributes {
 
 impl MangaAttributes {
     /// The current airing status of the manga.
+    ///
+    /// Refer to [`AnimeAttributes::airing_status`] for more information.
+    ///
+    /// [`AnimeAttributes::airing_status`]: struct.AnimeAttributes.html#method.airing_status
     pub fn airing_status(&self) -> AiringStatus {
         if self.end_date.is_some() {
             AiringStatus::Finished
