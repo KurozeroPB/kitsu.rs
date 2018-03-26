@@ -61,6 +61,21 @@ fn test_get_manga() {
 
 #[ignore]
 #[test]
+fn test_get_producer() {
+    let mut core = Core::new().unwrap();
+
+    let connector = HttpsConnector::new(1, &core.handle()).unwrap();
+    let client = Client::configure()
+        .connector(connector)
+        .build(&core.handle());
+
+    let runner = client.get_producer(1).map(|_| ()).map_err(|_| ());
+
+    core.run(runner).unwrap();
+}
+
+#[ignore]
+#[test]
 fn test_get_user() {
     let mut core = Core::new().unwrap();
 

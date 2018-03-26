@@ -35,6 +35,15 @@ fn test_get_manga() {
 
 #[ignore]
 #[test]
+fn test_get_produer() {
+    let client = Client::new();
+    let res = client.get_producer(1).unwrap();
+
+    assert_eq!(res.data.id, "1");
+}
+
+#[ignore]
+#[test]
 fn test_get_user() {
     let client = Client::new();
     let res = client.get_user(1).unwrap();

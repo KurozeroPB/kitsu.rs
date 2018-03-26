@@ -137,6 +137,53 @@ pub trait KitsuRequester {
     fn get_manga(&self, id: u64)
         -> Box<Future<Item = Response<Manga>, Error = Error>>;
 
+    // Gets a producer using their id.
+    ///
+    /// # Examples
+    ///
+    /// Get a producer with the id of 1:
+    ///
+    /// ```rust,ignore
+    /// extern crate hyper;
+    /// extern crate hyper_tls;
+    /// extern crate kitsu;
+    /// extern crate tokio_core;
+    ///
+    /// use hyper_tls::HttpsConnector;
+    /// use kitsu::KitsuHyperRequester;
+    /// use hyper::Client;
+    /// use std::env;
+    /// use tokio_core::reactor::Core;
+    ///
+    /// let mut core = Core::new()?;
+    ///
+    /// let connector = HttpsConnector::new(1, &core.handle())?;
+    /// let client = Client::configure()
+    ///     .connector(connector)
+    ///     .build(&core.handle());
+    ///
+    /// let producer_id = 1;
+    ///
+    /// let runner = client.get_producer(producer_id)
+    ///     .map(|user| {
+    ///         println!(
+    ///             "The producers's name is '{}'",
+    ///             producer.data.attributes.name,
+    ///         );
+    ///     })
+    ///     .map_err(|why| {
+    ///         println!("Error with the request: {:?}", why);
+    ///     });
+    ///
+    /// core.run(runner)?;
+    /// ```
+    ///
+    // Note: This doc example can not be tested due to the reliance on
+    // tokio_core. Instead, this is taken from example `02_hyper` and should
+    // roughly match it to ensure accuracy.
+    fn get_producer(&self, id: u64)
+        -> Box<Future<Item = Response<Producer>, Error = Error>>;
+
     /// Gets a user using their id.
     ///
     /// # Examples
@@ -361,6 +408,18 @@ impl<B, C: Connect> KitsuRequester for HyperClient<C, B>
     fn get_manga(&self, id: u64)
         -> Box<Future<Item = Response<Manga>, Error = Error>> {
         let url = format!("{}/manga/{}", API_URL, id);
+        let c = &url;
+        let uri = try_uri!(c);
+
+        Box::new(self.get(uri)
+            .and_then(|res| res.body().concat2())
+            .map_err(From::from)
+            .and_then(|body| serde_json::from_slice(&body).map_err(From::from)))
+    }
+
+    fn get_producer(&self, id: u64)
+        -> Box<Future<Item = Response<Producer>, Error = Error>> {
+        let url = format!("{}/producer/{}", API_URL, id);
         let c = &url;
         let uri = try_uri!(c);
 

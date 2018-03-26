@@ -13,7 +13,7 @@ pub struct Character {
     pub id: String,
     /// The type of item this is. This should always be [`Type::Character`].
     ///
-    /// [`Type::Character`]: enum.Character.html#variant.Character
+    /// [`Type::Character`]: enum.Type.html#variant.Character
     #[serde(rename = "type")]
     pub kind: Type,
     /// Links related to the anime.
@@ -37,6 +37,39 @@ pub struct CharacterAttributes {
     /// The name of the character.
     pub name: String,
     /// URL slug of the character.
+    pub slug: String,
+    /// When the entry was last updated.
+    pub updated_at: String,
+}
+
+/// Information about a producer
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Producer {
+    /// Information about the producer.
+    pub attributes: ProducerAttributes,
+    /// The id of the producer
+    pub id: String,
+    /// The type of item this is. This should always be [`Type::Producer`].
+    ///
+    /// [`Type::Character`]: enum.Type.html#variant.Producer
+    #[serde(rename = "type")]
+    pub kind: Type,
+    /// Links to the related anime-productions.
+    pub links: HashMap<String, String>,
+}
+
+/// Information about a [`Producer`].
+///
+/// [`Producer`]: struct.Producer.html
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ProducerAttributes {
+    /// When the entry was created.
+    pub created_at: String,
+    /// The name of the producer.
+    pub name: String,
+    /// URL slug of the producer.
     pub slug: String,
     /// When the entry was last updated.
     pub updated_at: String,
@@ -286,6 +319,9 @@ pub struct Relationship {
 /// [`Anime`]: struct.Anime.html
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct AnimeRelationships {
+    /// Productions for the anime
+    #[serde(rename="animeProductions")]
+    pub anime_productions: Relationship,
     /// Castings for the anime.
     pub castings: Relationship,
     /// The anime's episodes.
@@ -989,6 +1025,8 @@ pub enum MangaType {
     Manga,
     /// Indicator that the manga is a manhua.
     Manhua,
+    /// Indicator that the manga is a manhwa.
+    Manhwa,
     /// Indicator that the manga is a novel.
     Novel,
     /// Indicator that the manga is a oneshot.
@@ -1034,6 +1072,11 @@ pub enum Type {
     ///
     /// [`Manga`]: struct.Manga.html
     Manga,
+    /// Indicator that the result is a [`Producer`]
+    /// 
+    /// [`Producer`]: struct.Producer.html
+    #[serde(rename = "producers")]
+    Producer,
     /// Indicator that the result is a [`User`].
     ///
     /// [`User`]: struct.User.html

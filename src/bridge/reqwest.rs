@@ -12,7 +12,7 @@ use serde::de::DeserializeOwned;
 use serde_json;
 use ::builder::Search;
 use ::{API_URL, Error, Result};
-use ::model::{Anime, Character, Manga, Response, User};
+use ::model::{Anime, Character, Manga, Producer, Response, User};
 
 /// Trait which defines the methods necessary to interact with the service.
 ///
@@ -133,6 +133,56 @@ pub trait KitsuRequester {
     /// [`Error::ReqwestParse`]: ../enum.Error.html#variant.ReqwestParse
     /// [`Error::ReqwestUnauthorized`]: ../enum.Error.html#variant.ReqwestUnauthorized
     fn get_manga(&self, id: u64) -> Result<Response<Manga>>;
+
+    /// Gets a producer using its id
+    /// 
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// extern crate kitsu;
+    /// extern crate reqwest;
+    ///
+    /// use kitsu::KitsuReqwestRequester;
+    /// use reqwest::Client;
+    ///
+    /// fn main() {
+    ///     // Create the reqwest Client.
+    ///     let client = Client::new();
+    ///
+    ///     let producer_id = 1;
+    ///
+    ///     // Get the anime.
+    ///     let anime = client.get_producer(producer_id)
+    ///         .expect("Error getting producer");
+    ///
+    ///     // Do something with producer
+    /// }
+    /// ```
+    ///
+    /// # Errors
+    ///
+    /// Returns [`Error::Json`] if there was an error parsing the response
+    /// body.
+    ///
+    /// Returns [`Error::ReqwestBad`] if the request was otherwise bad for some
+    /// reason, containing the response.
+    ///
+    /// Returns [`Error::ReqwestInvalid`] if the response was a non-OK (status
+    /// code 200) response, containing the response.
+    ///
+    /// Returns [`Error::ReqwestParse`] if there was an error parsing the image
+    /// parameters into a valid URL.
+    ///
+    /// Returns [`Error::ReqwestUnauthorized`] if the authorization token was
+    /// invalid.
+    ///
+    /// [`Error::Json`]: ../enum.Error.html#variant.Json
+    /// [`Error::NoParamsSpecified`]: ../enum.Error.html#variant.NoParamsSpecified
+    /// [`Error::ReqwestBad`]: ../enum.Error.html#variant.ReqwestBad
+    /// [`Error::ReqwestInvalid`]: ../enum.Error.html#variant.ReqwestInvalid
+    /// [`Error::ReqwestParse`]: ../enum.Error.html#variant.ReqwestParse
+    /// [`Error::ReqwestUnauthorized`]: ../enum.Error.html#variant.ReqwestUnauthorized
+    fn get_producer(&self, id: u64) -> Result<Response<Producer>>;
 
     /// Gets a user using their id.
     ///
@@ -358,7 +408,7 @@ impl KitsuRequester for ReqwestClient {
     }
 
     fn get_character(&self, id: u64) -> Result<Response<Character>> {
-        let uri = Url::parse(&format!("{}/character/{}", API_URL, id.to_string()))?;
+        let uri = Url::parse(&format!("{}/characters/{}", API_URL, id.to_string()))?;
 
         handle_request::<Response<Character>>(&mut self.get(uri))
     }
@@ -373,6 +423,12 @@ impl KitsuRequester for ReqwestClient {
         let uri = Url::parse(&format!("{}/users/{}", API_URL, id.to_string()))?;
 
         handle_request::<Response<User>>(&mut self.get(uri))
+    }
+
+    fn get_producer(&self, id: u64) -> Result<Response<Producer>> {
+        let uri = Url::parse(&format!("{}/producers/{}", API_URL, id.to_string()))?;
+
+        handle_request::<Response<Producer>>(&mut self.get(uri))
     }
 
     fn search_anime<F: FnOnce(Search) -> Search>(&self, f: F) ->
