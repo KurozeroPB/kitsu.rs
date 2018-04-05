@@ -159,10 +159,12 @@ pub struct AnimeAttributes {
     pub cover_image: Option<CoverImage>,
     /// The cover's offset from the top.
     ///
+    /// This has the possibility of being negative.
+    ///
     /// # Examples
     ///
     /// `263`
-    pub cover_image_top_offset: u16,
+    pub cover_image_top_offset: i16,
     /// Date the anime finished airing.
     ///
     /// # Examples
@@ -459,10 +461,12 @@ pub struct MangaAttributes {
     pub cover_image: Option<CoverImage>,
     /// The cover's offset from the top.
     ///
+    /// This has the possibility of being negative.
+    ///
     /// # Examples
     ///
     /// `60`
-    pub cover_image_top_offset: u16,
+    pub cover_image_top_offset: i16,
     /// Date the manga finished.
     ///
     /// # Examples
@@ -1029,6 +1033,8 @@ pub enum MangaType {
     Manhwa,
     /// Indicator that the manga is a novel.
     Novel,
+    /// Indicator that the manga is an Original-English-Language manga.
+    OEL,
     /// Indicator that the manga is a oneshot.
     Oneshot,
 }
@@ -1073,7 +1079,7 @@ pub enum Type {
     /// [`Manga`]: struct.Manga.html
     Manga,
     /// Indicator that the result is a [`Producer`]
-    /// 
+    ///
     /// [`Producer`]: struct.Producer.html
     #[serde(rename = "producers")]
     Producer,
