@@ -158,6 +158,7 @@ pub struct AnimeAttributes {
     /// `https://static.hummingbird.me/anime/7442/cover/$1.png`
     pub cover_image: Option<CoverImage>,
     /// The cover's offset from the top.
+    ///
     /// This has the possibility of being negative.
     ///
     /// # Examples
@@ -459,6 +460,7 @@ pub struct MangaAttributes {
     /// `https://static.hummingbird.me/manga/22352/cover/$1.png`
     pub cover_image: Option<CoverImage>,
     /// The cover's offset from the top.
+    ///
     /// This has the possibility of being negative.
     ///
     /// # Examples
