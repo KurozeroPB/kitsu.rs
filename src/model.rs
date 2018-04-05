@@ -1029,6 +1029,8 @@ pub enum MangaType {
     Manhwa,
     /// Indicator that the manga is a novel.
     Novel,
+    /// Indicator that the manga is an Original-English-Language manga.
+    OEL,
     /// Indicator that the manga is a oneshot.
     Oneshot,
 }
