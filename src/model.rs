@@ -158,11 +158,12 @@ pub struct AnimeAttributes {
     /// `https://static.hummingbird.me/anime/7442/cover/$1.png`
     pub cover_image: Option<CoverImage>,
     /// The cover's offset from the top.
+    /// This has the possibility of being negative.
     ///
     /// # Examples
     ///
     /// `263`
-    pub cover_image_top_offset: u16,
+    pub cover_image_top_offset: i16,
     /// Date the anime finished airing.
     ///
     /// # Examples
@@ -458,11 +459,12 @@ pub struct MangaAttributes {
     /// `https://static.hummingbird.me/manga/22352/cover/$1.png`
     pub cover_image: Option<CoverImage>,
     /// The cover's offset from the top.
+    /// This has the possibility of being negative.
     ///
     /// # Examples
     ///
     /// `60`
-    pub cover_image_top_offset: u16,
+    pub cover_image_top_offset: i16,
     /// Date the manga finished.
     ///
     /// # Examples
@@ -1075,7 +1077,7 @@ pub enum Type {
     /// [`Manga`]: struct.Manga.html
     Manga,
     /// Indicator that the result is a [`Producer`]
-    /// 
+    ///
     /// [`Producer`]: struct.Producer.html
     #[serde(rename = "producers")]
     Producer,
