@@ -1,5 +1,5 @@
 [package]
-authors = ["Mei Boudreau <xanizl@me.com>", "Zeyla Hellyer <zey@zey.moe>"]
+authors = ["Zeyla Hellyer <zeylahellyer@gmail.com>"]
 categories = ["api-bindings", "web-programming"]
 description = "Unofficial Rust HTTP client implementations for the Kitsu API."
 documentation = "https://docs.rs/kitsu"
