@@ -1,8 +1,8 @@
 # kitsu.rs
 
 An unofficial Rust library acting as a wrapper around the [Kitsu] API, offering
-implementations for both asynchronous hyper (v0.11) and synchronous reqwest
-(v0.8).
+implementations for both asynchronous hyper (v0.12) and synchronous reqwest
+(v0.9).
 
 **note:** The library supports retrieval from the API, but does not currently
 support authenticated requests.

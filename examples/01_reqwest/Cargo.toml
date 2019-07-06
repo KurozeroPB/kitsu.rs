@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["my name <my@email.address>"]
 
 [dependencies]
-reqwest = "0.8.0"
+reqwest = "0.9"
 
 [dependencies.kitsu]
 features = ["reqwest-support"]

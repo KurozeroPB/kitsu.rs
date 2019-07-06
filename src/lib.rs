@@ -1,8 +1,8 @@
 //! # kitsu.rs
 //!
 //! An unofficial Rust library acting as a wrapper around the [Kitsu] API,
-//! offering implementations for both asynchronous hyper (v0.11) and synchronous
-//! reqwest (v0.8).
+//! offering implementations for both asynchronous hyper (v0.12) and synchronous
+//! reqwest (v0.9).
 //!
 //! **note:** The library supports retrieval from the API, but does not currently
 //! support authenticated requests.
@@ -18,7 +18,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! kitsu = "0.1"
+//! kitsu = "0.2"
 //! ```
 //!
 //! To enable both `hyper` and `reqwest` support:
@@ -105,6 +105,8 @@ extern crate serde_json;
 
 #[cfg(feature = "hyper")]
 extern crate futures;
+#[cfg(feature = "hyper")]
+extern crate http;
 #[cfg(feature = "hyper")]
 extern crate hyper;
 #[cfg(feature = "reqwest")]

@@ -1,16 +1,15 @@
 extern crate futures;
 extern crate hyper;
-extern crate hyper_tls;
+extern crate hyper_rustls;
 extern crate kitsu;
-extern crate tokio_core;
+extern crate tokio;
 
 use futures::Future;
 use futures::stream::Stream;
 use hyper::Client;
-use hyper_tls::HttpsConnector;
+use hyper_rustls::HttpsConnector;
 use kitsu::KitsuHyperRequester;
 use std::io::{self, Write};
-use tokio_core::reactor::Core;
 
 fn main() {
     // Read an anime name to search for from the users input.
@@ -20,14 +19,8 @@ fn main() {
     io::stdin().read_line(&mut input).expect("Error reading input");
     let input_trimmed = input.trim();
 
-    // Create the core and client which will be uesd to search.
-    let mut core = Core::new().expect("Error creating reactor core");
-
-    let connector = HttpsConnector::new(1, &core.handle())
-        .expect("Error creating connector");
-    let client = Client::configure()
-        .connector(connector)
-        .build(&core.handle());
+    let connector = HttpsConnector::new(1);
+    let client = Client::builder().build(connector);
 
     // Search for the anime and return the response.
     let runner = client.search_anime(|f| f.filter("text", input_trimmed))
@@ -40,5 +33,5 @@ fn main() {
             println!("\n\nDone")
         });
 
-    core.run(runner).expect("Error running core");
+    tokio::run(runner);
 }

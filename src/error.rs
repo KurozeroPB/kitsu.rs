@@ -4,7 +4,9 @@ use std::fmt::{Display, Formatter, Result as FmtResult};
 use std::result::Result as StdResult;
 
 #[cfg(feature = "hyper")]
-use hyper::error::{Error as HyperError, UriError};
+use http::uri::InvalidUri;
+#[cfg(feature = "hyper")]
+use hyper::error::Error as HyperError;
 #[cfg(feature = "reqwest")]
 use reqwest::{
     Error as ReqwestError,
@@ -48,7 +50,7 @@ pub enum Error {
     /// An error when building a request's URI from the `hyper` crate when it is
     /// enabled.
     #[cfg(feature = "hyper")]
-    Uri(UriError),
+    Uri(InvalidUri),
 }
 
 #[cfg(feature = "hyper")]
@@ -79,8 +81,8 @@ impl From<ReqwestUrlError> for Error {
 }
 
 #[cfg(feature = "hyper")]
-impl From<UriError> for Error {
-    fn from(err: UriError) -> Error {
+impl From<InvalidUri> for Error {
+    fn from(err: InvalidUri) -> Error {
         Error::Uri(err)
     }
 }

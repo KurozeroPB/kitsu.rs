@@ -8,9 +8,14 @@
 
 use futures::future::{self, Future};
 use futures::Stream;
-use hyper::client::{Client as HyperClient, Connect};
-use hyper::error::Error as HyperError;
-use hyper::Uri;
+use http::uri::Uri;
+use hyper::{
+    body::Body,
+    client::{
+        connect::Connect,
+        Client as HyperClient,
+    }
+};
 use serde_json;
 use std::str::FromStr;
 use ::builder::Search;
@@ -47,22 +52,17 @@ pub trait KitsuRequester {
     ///
     /// ```rust,ignore
     /// extern crate hyper;
-    /// extern crate hyper_tls;
+    /// extern crate hyper_rustls;
     /// extern crate kitsu;
-    /// extern crate tokio_core;
+    /// extern crate tokio;
     ///
-    /// use hyper_tls::HttpsConnector;
-    /// use kitsu::KitsuHyperRequester;
+    /// use hyper_rustls::HttpsConnector;
     /// use hyper::Client;
+    /// use kitsu::KitsuHyperRequester;
     /// use std::env;
-    /// use tokio_core::reactor::Core;
     ///
-    /// let mut core = Core::new()?;
-    ///
-    /// let connector = HttpsConnector::new(1, &core.handle())?;
-    /// let client = Client::configure()
-    ///     .connector(connector)
-    ///     .build(&core.handle());
+    /// let connector = HttpsConnector::new(1);
+    /// let client = Client::builder().build(connector);
     ///
     /// let anime_id = 1;
     ///
@@ -77,18 +77,18 @@ pub trait KitsuRequester {
     ///         println!("Error with the request: {:?}", why);
     ///     });
     ///
-    /// core.run(runner)?;
+    /// tokio::run(runner);
     /// ```
     ///
     // Note: This doc example can not be tested due to the reliance on
-    // tokio_core. Instead, this is taken from example `02_hyper` and should
+    // tokio. Instead, this is taken from example `02_hyper` and should
     // roughly match it to ensure accuracy.
     fn get_anime(&self, id: u64)
-        -> Box<Future<Item = Response<Anime>, Error = Error>>;
+        -> Box<Future<Item = Response<Anime>, Error = Error> + Send>;
 
     /// Gets a character using its id.
     fn get_character(&self, id: u64)
-        -> Box<Future<Item = Response<Character>, Error = Error>>;
+        -> Box<Future<Item = Response<Character>, Error = Error> + Send>;
 
     /// Gets a manga using its id.
     ///
@@ -98,22 +98,19 @@ pub trait KitsuRequester {
     ///
     /// ```rust,ignore
     /// extern crate hyper;
-    /// extern crate hyper_tls;
+    /// extern crate hyper_rustls;
     /// extern crate kitsu;
-    /// extern crate tokio_core;
+    /// extern crate tokio;
     ///
-    /// use hyper_tls::HttpsConnector;
+    /// use hyper_rustls::HttpsConnector;
     /// use kitsu::KitsuHyperRequester;
     /// use hyper::Client;
     /// use std::env;
-    /// use tokio_core::reactor::Core;
     ///
     /// let mut core = Core::new()?;
     ///
-    /// let connector = HttpsConnector::new(1, &core.handle())?;
-    /// let client = Client::configure()
-    ///     .connector(connector)
-    ///     .build(&core.handle());
+    /// let connector = HttpsConnector::new(1);
+    /// let client = Client::builder().build(connector);
     ///
     /// let manga_id = 1;
     ///
@@ -128,14 +125,14 @@ pub trait KitsuRequester {
     ///         println!("Error with the request: {:?}", why);
     ///     });
     ///
-    /// core.run(runner)?;
+    /// tokio::run(runner);
     /// ```
     ///
     // Note: This doc example can not be tested due to the reliance on
-    // tokio_core. Instead, this is taken from example `02_hyper` and should
+    // tokio. Instead, this is taken from example `02_hyper` and should
     // roughly match it to ensure accuracy.
     fn get_manga(&self, id: u64)
-        -> Box<Future<Item = Response<Manga>, Error = Error>>;
+        -> Box<Future<Item = Response<Manga>, Error = Error> + Send>;
 
     // Gets a producer using their id.
     ///
@@ -145,22 +142,19 @@ pub trait KitsuRequester {
     ///
     /// ```rust,ignore
     /// extern crate hyper;
-    /// extern crate hyper_tls;
+    /// extern crate hyper_rustls;
     /// extern crate kitsu;
-    /// extern crate tokio_core;
+    /// extern crate tokio;
     ///
-    /// use hyper_tls::HttpsConnector;
+    /// use hyper_rustls::HttpsConnector;
     /// use kitsu::KitsuHyperRequester;
     /// use hyper::Client;
     /// use std::env;
-    /// use tokio_core::reactor::Core;
     ///
     /// let mut core = Core::new()?;
     ///
-    /// let connector = HttpsConnector::new(1, &core.handle())?;
-    /// let client = Client::configure()
-    ///     .connector(connector)
-    ///     .build(&core.handle());
+    /// let connector = HttpsConnector::new(1);
+    /// let client = Client::builder().build(connector);
     ///
     /// let producer_id = 1;
     ///
@@ -175,14 +169,14 @@ pub trait KitsuRequester {
     ///         println!("Error with the request: {:?}", why);
     ///     });
     ///
-    /// core.run(runner)?;
+    /// tokio::run(runner);
     /// ```
     ///
     // Note: This doc example can not be tested due to the reliance on
-    // tokio_core. Instead, this is taken from example `02_hyper` and should
+    // tokio. Instead, this is taken from example `02_hyper` and should
     // roughly match it to ensure accuracy.
     fn get_producer(&self, id: u64)
-        -> Box<Future<Item = Response<Producer>, Error = Error>>;
+        -> Box<Future<Item = Response<Producer>, Error = Error> + Send>;
 
     /// Gets a user using their id.
     ///
@@ -192,22 +186,19 @@ pub trait KitsuRequester {
     ///
     /// ```rust,ignore
     /// extern crate hyper;
-    /// extern crate hyper_tls;
+    /// extern crate hyper_rustls;
     /// extern crate kitsu;
-    /// extern crate tokio_core;
+    /// extern crate tokio;
     ///
-    /// use hyper_tls::HttpsConnector;
+    /// use hyper_rustls::HttpsConnector;
     /// use kitsu::KitsuHyperRequester;
     /// use hyper::Client;
     /// use std::env;
-    /// use tokio_core::reactor::Core;
     ///
     /// let mut core = Core::new()?;
     ///
-    /// let connector = HttpsConnector::new(1, &core.handle())?;
-    /// let client = Client::configure()
-    ///     .connector(connector)
-    ///     .build(&core.handle());
+    /// let connector = HttpsConnector::new(1);
+    /// let client = Client::builder().build(connector);
     ///
     /// let user_id = 1;
     ///
@@ -222,14 +213,14 @@ pub trait KitsuRequester {
     ///         println!("Error with the request: {:?}", why);
     ///     });
     ///
-    /// core.run(runner)?;
+    /// tokio::run(runner);
     /// ```
     ///
     // Note: This doc example can not be tested due to the reliance on
-    // tokio_core. Instead, this is taken from example `02_hyper` and should
+    // tokio. Instead, this is taken from example `02_hyper` and should
     // roughly match it to ensure accuracy.
     fn get_user(&self, id: u64)
-        -> Box<Future<Item = Response<User>, Error = Error>>;
+        -> Box<Future<Item = Response<User>, Error = Error> + Send>;
 
     /// Searches for an anime using the passed [Search] builder.
     ///
@@ -239,22 +230,19 @@ pub trait KitsuRequester {
     ///
     /// ```rust,ignore
     /// extern crate hyper;
-    /// extern crate hyper_tls;
+    /// extern crate hyper_rustls;
     /// extern crate kitsu;
-    /// extern crate tokio_core;
+    /// extern crate tokio;
     ///
-    /// use hyper_tls::HttpsConnector;
+    /// use hyper_rustls::HttpsConnector;
     /// use kitsu::KitsuHyperRequester;
     /// use hyper::Client;
     /// use std::env;
-    /// use tokio_core::reactor::Core;
     ///
     /// let mut core = Core::new()?;
     ///
-    /// let connector = HttpsConnector::new(1, &core.handle())?;
-    /// let client = Client::configure()
-    ///     .connector(connector)
-    ///     .build(&core.handle());
+    /// let connector = HttpsConnector::new(1);
+    /// let client = Client::builder().build(connector);
     ///
     /// let anime_name = "Beyond the Boundary";
     ///
@@ -269,18 +257,18 @@ pub trait KitsuRequester {
     ///         println!("Error with the request: {:?}", why);
     ///     });
     ///
-    /// core.run(runner)?;
+    /// tokio::run(runner);
     /// ```
     ///
     // Note: This doc example can not be tested due to the reliance on
-    // tokio_core. Instead, this is taken from example `02_hyper` and should
+    // tokio. Instead, this is taken from example `02_hyper` and should
     // roughly match it to ensure accuracy.
     fn search_anime<F: FnOnce(Search) -> Search>(&self, f: F)
-        -> Box<Future<Item = Response<Vec<Anime>>, Error = Error>>;
+        -> Box<Future<Item = Response<Vec<Anime>>, Error = Error> + Send>;
 
     /// Searches for a character using the passed search builder.
     fn search_characters<F: FnOnce(Search) -> Search>(&self, f: F)
-        -> Box<Future<Item = Response<Vec<Character>>, Error = Error>>;
+        -> Box<Future<Item = Response<Vec<Character>>, Error = Error> + Send>;
 
     /// Searches for a manga using the passed [Search] builder.
     ///
@@ -290,22 +278,19 @@ pub trait KitsuRequester {
     ///
     /// ```rust,ignore
     /// extern crate hyper;
-    /// extern crate hyper_tls;
+    /// extern crate hyper_rustls;
     /// extern crate kitsu;
-    /// extern crate tokio_core;
+    /// extern crate tokio;
     ///
-    /// use hyper_tls::HttpsConnector;
+    /// use hyper_rustls::HttpsConnector;
     /// use kitsu::KitsuHyperRequester;
     /// use hyper::Client;
     /// use std::env;
-    /// use tokio_core::reactor::Core;
     ///
     /// let mut core = Core::new()?;
     ///
-    /// let connector = HttpsConnector::new(1, &core.handle())?;
-    /// let client = Client::configure()
-    ///     .connector(connector)
-    ///     .build(&core.handle());
+    /// let connector = HttpsConnector::new(1);
+    /// let client = Client::builder().build(connector);
     ///
     /// let manga_name = "Orange";
     ///
@@ -320,14 +305,14 @@ pub trait KitsuRequester {
     ///         println!("Error with the request: {:?}", why);
     ///     });
     ///
-    /// core.run(runner)?;
+    /// tokio::run(runner);
     /// ```
     ///
     // Note: This doc example can not be tested due to the reliance on
-    // tokio_core. Instead, this is taken from example `02_hyper` and should
+    // tokio. Instead, this is taken from example `02_hyper` and should
     // roughly match it to ensure accuracy.
     fn search_manga<F: FnOnce(Search) -> Search>(&self, f: F)
-        -> Box<Future<Item = Response<Vec<Manga>>, Error = Error>>;
+        -> Box<Future<Item = Response<Vec<Manga>>, Error = Error> + Send>;
 
     /// Searches for a user using the passed [`Search`] builder.
     ///
@@ -337,22 +322,19 @@ pub trait KitsuRequester {
     ///
     /// ```rust,ignore
     /// extern crate hyper;
-    /// extern crate hyper_tls;
+    /// extern crate hyper_rustls;
     /// extern crate kitsu;
-    /// extern crate tokio_core;
+    /// extern crate tokio;
     ///
-    /// use hyper_tls::HttpsConnector;
+    /// use hyper_rustls::HttpsConnector;
     /// use kitsu::KitsuHyperRequester;
     /// use hyper::Client;
     /// use std::env;
-    /// use tokio_core::reactor::Core;
     ///
     /// let mut core = Core::new()?;
     ///
-    /// let connector = HttpsConnector::new(1, &core.handle())?;
-    /// let client = Client::configure()
-    ///     .connector(connector)
-    ///     .build(&core.handle());
+    /// let connector = HttpsConnector::new(1);
+    /// let client = Client::builder().build(connector);
     ///
     /// let user_name = "Bob";
     ///
@@ -367,82 +349,81 @@ pub trait KitsuRequester {
     ///         println!("Error with the request: {:?}", why);
     ///     });
     ///
-    /// core.run(runner)?;
+    /// tokio::run(runner);
     /// ```
     ///
     /// [`Search`]: ../builder/struct.Search.html
     ///
     // Note: This doc example can not be tested due to the reliance on
-    // tokio_core. Instead, this is taken from example `02_hyper` and should
+    // tokio. Instead, this is taken from example `02_hyper` and should
     // roughly match it to ensure accuracy.
     fn search_users<F: FnOnce(Search) -> Search>(&self, f: F)
-        -> Box<Future<Item = Response<Vec<User>>, Error = Error>>;
+        -> Box<Future<Item = Response<Vec<User>>, Error = Error> + Send>;
 }
 
-impl<B, C: Connect> KitsuRequester for HyperClient<C, B>
-    where B: Stream<Error = HyperError> + 'static, B::Item: AsRef<[u8]> {
+impl<C: Connect + Send + 'static> KitsuRequester for HyperClient<C, Body> {
     fn get_anime(&self, id: u64)
-        -> Box<Future<Item = Response<Anime>, Error = Error>> {
+        -> Box<Future<Item = Response<Anime>, Error = Error> + Send> {
         let url = format!("{}/anime/{}", API_URL, id);
         let c = &url;
         let uri = try_uri!(c);
 
         Box::new(self.get(uri)
-            .and_then(|res| res.body().concat2())
+            .and_then(|res| res.into_body().concat2())
             .map_err(From::from)
             .and_then(|body| serde_json::from_slice(&body).map_err(From::from)))
     }
 
     fn get_character(&self, id: u64)
-        -> Box<Future<Item = Response<Character>, Error = Error>> {
+        -> Box<Future<Item = Response<Character>, Error = Error> + Send> {
         let url = format!("{}/characters/{}", API_URL, id);
         let c = &url;
         let uri = try_uri!(c);
 
         Box::new(self.get(uri)
-            .and_then(|res| res.body().concat2())
+            .and_then(|res| res.into_body().concat2())
             .map_err(From::from)
             .and_then(|body| serde_json::from_slice(&body).map_err(From::from)))
     }
 
     fn get_manga(&self, id: u64)
-        -> Box<Future<Item = Response<Manga>, Error = Error>> {
+        -> Box<Future<Item = Response<Manga>, Error = Error> + Send> {
         let url = format!("{}/manga/{}", API_URL, id);
         let c = &url;
         let uri = try_uri!(c);
 
         Box::new(self.get(uri)
-            .and_then(|res| res.body().concat2())
+            .and_then(|res| res.into_body().concat2())
             .map_err(From::from)
             .and_then(|body| serde_json::from_slice(&body).map_err(From::from)))
     }
 
     fn get_producer(&self, id: u64)
-        -> Box<Future<Item = Response<Producer>, Error = Error>> {
+        -> Box<Future<Item = Response<Producer>, Error = Error> + Send> {
         let url = format!("{}/producer/{}", API_URL, id);
         let c = &url;
         let uri = try_uri!(c);
 
         Box::new(self.get(uri)
-            .and_then(|res| res.body().concat2())
+            .and_then(|res| res.into_body().concat2())
             .map_err(From::from)
             .and_then(|body| serde_json::from_slice(&body).map_err(From::from)))
     }
 
     fn get_user(&self, id: u64)
-        -> Box<Future<Item = Response<User>, Error = Error>> {
+        -> Box<Future<Item = Response<User>, Error = Error> + Send> {
         let url = format!("{}/users/{}", API_URL, id);
         let c = &url;
         let uri = try_uri!(c);
 
         Box::new(self.get(uri)
-            .and_then(|res| res.body().concat2())
+            .and_then(|res| res.into_body().concat2())
             .map_err(From::from)
             .and_then(|body| serde_json::from_slice(&body).map_err(From::from)))
     }
 
     fn search_anime<F: FnOnce(Search) -> Search>(&self, f: F)
-        -> Box<Future<Item = Response<Vec<Anime>>, Error = Error>> {
+        -> Box<Future<Item = Response<Vec<Anime>>, Error = Error> + Send> {
         let params = f(Search::default()).0;
 
         let url = format!("{}/anime?{}", API_URL, params);
@@ -450,13 +431,13 @@ impl<B, C: Connect> KitsuRequester for HyperClient<C, B>
         let uri = try_uri!(c);
 
         Box::new(self.get(uri)
-            .and_then(|res| res.body().concat2())
+            .and_then(|res| res.into_body().concat2())
             .map_err(From::from)
             .and_then(|body| serde_json::from_slice(&body).map_err(From::from)))
     }
 
     fn search_characters<F: FnOnce(Search) -> Search>(&self, f: F)
-        -> Box<Future<Item = Response<Vec<Character>>, Error = Error>> {
+        -> Box<Future<Item = Response<Vec<Character>>, Error = Error> + Send> {
         let params = f(Search::default()).0;
 
         let url = format!("{}/characters?{}", API_URL, params);
@@ -464,13 +445,13 @@ impl<B, C: Connect> KitsuRequester for HyperClient<C, B>
         let uri = try_uri!(c);
 
         Box::new(self.get(uri)
-            .and_then(|res| res.body().concat2())
+            .and_then(|res| res.into_body().concat2())
             .map_err(From::from)
             .and_then(|body| serde_json::from_slice(&body).map_err(From::from)))
     }
 
     fn search_manga<F: FnOnce(Search) -> Search>(&self, f: F)
-        -> Box<Future<Item = Response<Vec<Manga>>, Error = Error>> {
+        -> Box<Future<Item = Response<Vec<Manga>>, Error = Error> + Send> {
         let params = f(Search::default()).0;
 
         let url = format!("{}/manga?{}", API_URL, params);
@@ -478,13 +459,13 @@ impl<B, C: Connect> KitsuRequester for HyperClient<C, B>
         let uri = try_uri!(c);
 
         Box::new(self.get(uri)
-            .and_then(|res| res.body().concat2())
+            .and_then(|res| res.into_body().concat2())
             .map_err(From::from)
             .and_then(|body| serde_json::from_slice(&body).map_err(From::from)))
     }
 
     fn search_users<F: FnOnce(Search) -> Search>(&self, f: F)
-        -> Box<Future<Item = Response<Vec<User>>, Error = Error>> {
+        -> Box<Future<Item = Response<Vec<User>>, Error = Error> + Send> {
         let params = f(Search::default()).0;
 
         let url = format!("{}/users?{}", API_URL, params);
@@ -492,7 +473,7 @@ impl<B, C: Connect> KitsuRequester for HyperClient<C, B>
         let uri = try_uri!(c);
 
         Box::new(self.get(uri)
-            .and_then(|res| res.body().concat2())
+            .and_then(|res| res.into_body().concat2())
             .map_err(From::from)
             .and_then(|body| serde_json::from_slice(&body).map_err(From::from)))
     }
