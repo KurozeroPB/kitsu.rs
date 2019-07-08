@@ -10,11 +10,12 @@ use futures::future::{self, Future};
 use futures::Stream;
 use http::uri::Uri;
 use hyper::{
-    body::Body,
+    body::Payload,
     client::{
         connect::Connect,
         Client as HyperClient,
-    }
+    },
+    error::Error as HyperError,
 };
 use serde_json;
 use std::str::FromStr;
@@ -361,7 +362,13 @@ pub trait KitsuRequester {
         -> Box<Future<Item = Response<Vec<User>>, Error = Error> + Send>;
 }
 
-impl<C: Connect + Send + 'static> KitsuRequester for HyperClient<C, Body> {
+impl<B, C> KitsuRequester for HyperClient<C, B>
+    where C: Connect + Sync + 'static,
+          C::Transport: 'static,
+          C::Future: 'static,
+          B: Payload + Send + 'static + Default + Stream<Error = HyperError>,
+          B::Data: Send,
+          B::Item: AsRef<[u8]> {
     fn get_anime(&self, id: u64)
         -> Box<Future<Item = Response<Anime>, Error = Error> + Send> {
         let url = format!("{}/anime/{}", API_URL, id);
