@@ -404,31 +404,31 @@ impl KitsuRequester for ReqwestClient {
     fn get_anime(&self, id: u64) -> Result<Response<Anime>> {
         let uri = Url::parse(&format!("{}/anime/{}", API_URL, id.to_string()))?;
 
-        handle_request::<Response<Anime>>(uri)
+        handle_request::<Response<Anime>>(self.get(uri))
     }
 
     fn get_character(&self, id: u64) -> Result<Response<Character>> {
         let uri = Url::parse(&format!("{}/characters/{}", API_URL, id.to_string()))?;
 
-        handle_request::<Response<Character>>(uri)
+        handle_request::<Response<Character>>(self.get(uri))
     }
 
     fn get_manga(&self, id: u64) -> Result<Response<Manga>> {
         let uri = Url::parse(&format!("{}/manga/{}", API_URL, id.to_string()))?;
 
-        handle_request::<Response<Manga>>(uri)
+        handle_request::<Response<Manga>>(self.get(uri))
     }
 
     fn get_user(&self, id: u64) -> Result<Response<User>> {
         let uri = Url::parse(&format!("{}/users/{}", API_URL, id.to_string()))?;
 
-        handle_request::<Response<User>>(uri)
+        handle_request::<Response<User>>(self.get(uri))
     }
 
     fn get_producer(&self, id: u64) -> Result<Response<Producer>> {
         let uri = Url::parse(&format!("{}/producers/{}", API_URL, id.to_string()))?;
 
-        handle_request::<Response<Producer>>(uri)
+        handle_request::<Response<Producer>>(self.get(uri))
     }
 
     fn search_anime<F: FnOnce(Search) -> Search>(&self, f: F) ->
@@ -436,7 +436,7 @@ impl KitsuRequester for ReqwestClient {
         let params = f(Search::default()).0;
         let uri = Url::parse(&format!("{}/anime?{}", API_URL, params))?;
 
-        handle_request::<Response<Vec<Anime>>>(uri)
+        handle_request::<Response<Vec<Anime>>>(self.get(uri))
     }
 
     fn search_characters<F: FnOnce(Search) -> Search>(&self, f: F) ->
@@ -444,7 +444,7 @@ impl KitsuRequester for ReqwestClient {
         let params = f(Search::default()).0;
         let uri = Url::parse(&format!("{}/characters?{}", API_URL, params))?;
 
-        handle_request::<Response<Vec<Character>>>(uri)
+        handle_request::<Response<Vec<Character>>>(self.get(uri))
     }
 
     fn search_manga<F: FnOnce(Search) -> Search>(&self, f: F) ->
@@ -452,7 +452,7 @@ impl KitsuRequester for ReqwestClient {
         let params = f(Search::default()).0;
         let uri = Url::parse(&format!("{}/manga?{}", API_URL, params))?;
 
-        handle_request::<Response<Vec<Manga>>>(uri)
+        handle_request::<Response<Vec<Manga>>>(self.get(uri))
     }
 
     fn search_users<F: FnOnce(Search) -> Search>(&self, f: F) ->
@@ -460,13 +460,12 @@ impl KitsuRequester for ReqwestClient {
         let params = f(Search::default()).0;
         let uri = Url::parse(&format!("{}/users?{}", API_URL, params))?;
 
-        handle_request::<Response<Vec<User>>>(uri)
+        handle_request::<Response<Vec<User>>>(self.get(uri))
     }
 }
 
-fn handle_request<T: DeserializeOwned>(uri: reqwest::Url) -> Result<T> {
-    let client = reqwest::Client::new();
-    let response = client.get(uri).send()?;
+fn handle_request<T: DeserializeOwned>(request: RequestBuilder) -> Result<T> {
+    let response = request.send()?;
 
     match response.status() {
         StatusCode::OK => {},
